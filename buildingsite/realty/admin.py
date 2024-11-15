@@ -8,7 +8,7 @@ class ApartmentInline(admin.TabularInline):  # или admin.StackedInline
     
 
 class InfoBuildingAdmin(admin.ModelAdmin):
-    list_display = ('formatted_code', 'city', 'street', 'number_building')
+    list_display = ('formatted_code', 'city', 'number_building')
     list_filter = ('city',)
     list_display_links = ('city',)
     inlines = [ApartmentInline]  # Добавляем inline
