@@ -8,7 +8,7 @@ class ApartmentInline(admin.TabularInline):  # или admin.StackedInline
     
 
 class InfoBuildingAdmin(admin.ModelAdmin):
-    list_display = ('formatted_code', 'city', 'number_building')
+    list_display = ('formatted_code', 'city', 'street', 'number_building')
     list_filter = ('city',)
     list_display_links = ('city',)
     inlines = [ApartmentInline]  # Добавляем inline
@@ -18,7 +18,7 @@ class InfoBuildingAdmin(admin.ModelAdmin):
         return f'Код: {obj.code_building}'  # Форматируем вывод
 
 class ApartmentAdmin(admin.ModelAdmin):
-    list_display = ('number_rooms', 'number_floor', 'square', 'price', 'code_building', 'building_info')
+    list_display = ('number_rooms', 'number_floor', 'square', 'price', 'code_building', 'building_info', 'apartment_code')
     list_filter = ('number_rooms',)
     readonly_fields = ('square',)
 
@@ -56,7 +56,8 @@ class Deal2Admin(admin.ModelAdmin):
         return obj.data_deal.strftime('%d.%m.%Y')
 
 class ApplicationWebsiteAdmin(admin.ModelAdmin):
-    list_display = ('name_client', 'number_phone', 'status_application')
+    list_display = ('date_create3', 'name_client', 'number_phone', 'status_application')
+    date_hierarchy = 'date_create3'
 
 admin.site.register(InfoBuilding, InfoBuildingAdmin)
 admin.site.register(Apartment, ApartmentAdmin)

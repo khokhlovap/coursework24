@@ -20,7 +20,7 @@ class Apartment (models.Model):
     square = models.DecimalField(max_digits=7, decimal_places=2, verbose_name=u"Площадь, кв.м")
     price = models.DecimalField(max_digits=12, decimal_places=3, verbose_name=u"Стоимость")
     code_building = models.ForeignKey(InfoBuilding, verbose_name=u"Код здания", on_delete=models.CASCADE)
-    
+    apartment_code = models.CharField(null=True, blank=True, max_length=50, unique=True, verbose_name='Код апартамента')
     class Meta:
         verbose_name = 'Апартаменты'
         verbose_name_plural = 'Апартаменты'
@@ -68,10 +68,15 @@ class Deal2(models.Model):
         verbose_name_plural = 'Сделка - продано'
 
 class ApplicationWebsite(models.Model):
+    APPLICATION_STATUS_CHOICES = [
+        ('accepted', 'Принято'),
+        ('rejected', 'Отклонено'),
+    ]
     name_client=models.CharField(max_length=200, verbose_name=u"Имя")
     number_phone=models.CharField(max_length=20, verbose_name=u"Номер телефона")
-    status_application=models.CharField(max_length=200, verbose_name=u"Статус заявки")
-    
+    status_application=models.CharField(max_length=200, verbose_name=u"Статус заявки", choices=APPLICATION_STATUS_CHOICES)
+    # date_create2 = models.DateTimeField(auto_now=True)
+    date_create3 = models.DateTimeField(auto_now=True)
     class Meta:
         verbose_name = 'Заявки с сайта'
         verbose_name_plural = 'Заявки с сайта'
