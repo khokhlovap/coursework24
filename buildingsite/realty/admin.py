@@ -56,8 +56,13 @@ class Deal2Admin(admin.ModelAdmin):
         return obj.data_deal.strftime('%d.%m.%Y')
 
 class ApplicationWebsiteAdmin(admin.ModelAdmin):
-    list_display = ('date_create3', 'name_client', 'number_phone', 'status_application')
+    list_display = ('formatted_date_change', 'name_client', 'number_phone', 'status_application')
     date_hierarchy = 'date_create3'
+    readonly_fields = ('date_create3',)
+
+    @admin.display(description='Дата создания заявки')
+    def formatted_date_change(self, obj):
+        return obj.date_create3.strftime('%d.%m.%Y')
 
 admin.site.register(InfoBuilding, InfoBuildingAdmin)
 admin.site.register(Apartment, ApartmentAdmin)

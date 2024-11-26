@@ -76,7 +76,7 @@ class ApplicationWebsite(models.Model):
     number_phone=models.CharField(max_length=20, verbose_name=u"Номер телефона")
     status_application=models.CharField(max_length=200, verbose_name=u"Статус заявки", choices=APPLICATION_STATUS_CHOICES)
     # date_create2 = models.DateTimeField(auto_now=True)
-    date_create3 = models.DateTimeField(auto_now=True)
+    date_create3 = models.DateTimeField(auto_now=True, verbose_name=u"Дата создания заявки")
     class Meta:
         verbose_name = 'Заявки с сайта'
         verbose_name_plural = 'Заявки с сайта'
