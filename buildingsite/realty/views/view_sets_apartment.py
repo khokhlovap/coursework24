@@ -7,12 +7,14 @@ from django.db.models import Q
 from realty.serializers.apartment import ApartmentSerializer
 from django_filters import rest_framework as filters
 
+from rest_framework.decorators import action
+
 class ApartmentFilter(filters.FilterSet):
     number_rooms = filters.NumberFilter()
 
     class Meta:
         model = Apartment
-        fields = ['number_rooms']  # Добавьте другие поля, если нужно
+        fields = ['number_rooms']  
 
 class ApartmentViewSet(viewsets.ModelViewSet):
     serializer_class = ApartmentSerializer
@@ -32,3 +34,12 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         
         serializer = ApartmentSerializer(apartments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(methods=['get'], detail=False)
+    def for_process(self, request):
+            # Получаем квартиры, у которых статус: На рассмотрении
+        apartments_for_process = Apartment.objects.filter(
+            statusapartment__status_apartment='На рассмотрении')
+
+        serializer = ApartmentSerializer(apartments_for_process, many=True)
+        return Response(serializer.data)
