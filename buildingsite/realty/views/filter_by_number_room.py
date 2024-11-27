@@ -8,3 +8,4 @@ class InfobuildingByNumberView(generics.ListAPIView):
     def get_queryset(self):
         number = self.kwargs['number']
         return InfoBuilding.objects.filter(code_building=number)
+    
