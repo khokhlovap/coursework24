@@ -23,7 +23,7 @@ class ApartmentAdmin(admin.ModelAdmin):
     readonly_fields = ('square',)
 
 class StatusApartmentAdmin(admin.ModelAdmin):
-    list_display = ('id_apartment', 'status_apartment', 'formatted_date_change')
+    list_display = ('id_apartment', 'status_apartment', 'formatted_date_change', 'id_client')
     date_hierarchy = 'data_change'
     
     def id_apartment_display(self, obj):

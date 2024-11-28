@@ -26,24 +26,12 @@ class Apartment (models.Model):
         verbose_name_plural = 'Апартаменты'
 
     def __str__(self):
-        return f"{self.id}"
+        return f"{self.apartment_code}"
     
     def building_info(self):
         return f"{self.code_building.city}, {self.code_building.street} {self.code_building.number_building}"
     building_info.short_description = 'Информация о здании'
 
-class StatusApartment(models.Model):
-    id_apartment=models.ForeignKey(Apartment, on_delete=models.CASCADE, verbose_name=u"ID Апартамента")
-    status_apartment=models.CharField(max_length=200, verbose_name=u"Статус апартамента")
-    data_change=models.DateField(null=True, blank=True, verbose_name=u"Дата изменения статуса")
-    
-    class Meta:
-        verbose_name = 'Статус Апартаментов'
-        verbose_name_plural = 'Статус Апартаментов'
-
-    def __str__(self):
-        return f"Квартира {self.id_apartment.number_rooms}, этаж {self.id_apartment.number_floor}"
-    
 class RegularCustomers(models.Model):
     name_client=models.CharField(max_length=200, verbose_name=u"Имя")
     surname_client=models.CharField(max_length=200, verbose_name=u"Фамилия")
@@ -58,8 +46,21 @@ class RegularCustomers(models.Model):
         verbose_name = 'Постоянные клиенты'
         verbose_name_plural = 'Постоянные клиенты'
 
+class StatusApartment(models.Model):
+    id_apartment=models.ForeignKey(Apartment, on_delete=models.CASCADE, verbose_name=u"Код Апартамента")
+    status_apartment=models.CharField(max_length=200, verbose_name=u"Статус апартамента")
+    data_change=models.DateField(null=True, blank=True, verbose_name=u"Дата изменения статуса")
+    id_client = models.ForeignKey(RegularCustomers, on_delete=models.CASCADE, verbose_name=u"Клиент", null=True, blank=True)
+    class Meta:
+        verbose_name = 'Статус Апартаментов'
+        verbose_name_plural = 'Статус Апартаментов'
+
+    def __str__(self):
+        return f"Квартира {self.id_apartment.number_rooms}, этаж {self.id_apartment.number_floor}"
+    
+
 class Deal2(models.Model):
-    apartment=models.ForeignKey(Apartment, on_delete=models.CASCADE, verbose_name=u"ID Апартамента", related_name='deals')
+    apartment=models.ForeignKey(Apartment, on_delete=models.CASCADE, verbose_name=u"Код Апартамента", related_name='deals')
     client=models.ForeignKey(RegularCustomers, on_delete=models.CASCADE, verbose_name=u"ID Клиента", related_name="deals")
     data_deal=models.DateField(null=True, blank=True, verbose_name=u"Дата сделки")
    
