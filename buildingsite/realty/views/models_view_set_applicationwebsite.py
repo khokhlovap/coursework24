@@ -3,10 +3,12 @@ from rest_framework.response import Response
 from realty.models import ApplicationWebsite
 from realty.serializers.applicationwebsite import ApplicationWebsiteSerializer
 from rest_framework.decorators import action
+from realty.paginations.applicationwebsite import ApplicationPagination
 
 class ApplicationModelViewSet(viewsets.ModelViewSet):
     queryset = ApplicationWebsite.objects.all()
     serializer_class = ApplicationWebsiteSerializer
+    pagination_class = ApplicationPagination
 
     @action(methods=['post'], detail=True)
     def update_status(self, request, pk=None):
