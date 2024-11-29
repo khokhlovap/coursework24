@@ -47,8 +47,13 @@ class RegularCustomers(models.Model):
         verbose_name_plural = 'Постоянные клиенты'
 
 class StatusApartment(models.Model):
+    APPLICATION_STATUS_APARTMENT = [
+        ('sold', 'Продано'),
+        ('booked', 'Забронировано'),
+        ('consideration', 'На рассмотрении'),
+    ]
     id_apartment=models.ForeignKey(Apartment, on_delete=models.CASCADE, verbose_name=u"Код Апартамента")
-    status_apartment=models.CharField(max_length=200, verbose_name=u"Статус апартамента")
+    status_apartment=models.CharField(max_length=200, verbose_name=u"Статус апартамента", choices=APPLICATION_STATUS_APARTMENT)
     data_change=models.DateField(null=True, blank=True, verbose_name=u"Дата изменения статуса")
     id_client = models.ForeignKey(RegularCustomers, on_delete=models.CASCADE, verbose_name=u"Клиент", null=True, blank=True)
     class Meta:

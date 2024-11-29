@@ -6,10 +6,9 @@ class ApartmentInline(admin.TabularInline):  # или admin.StackedInline
     model = Apartment
     extra = 1  # Количество пустых форм для добавления новых объектов
     
-
 class InfoBuildingAdmin(admin.ModelAdmin):
     list_display = ('formatted_code', 'city', 'street', 'number_building')
-    list_filter = ('city',)
+    list_filter = ('city', 'code_building',)
     list_display_links = ('city',)
     inlines = [ApartmentInline]  # Добавляем inline
 
@@ -19,37 +18,34 @@ class InfoBuildingAdmin(admin.ModelAdmin):
 
 class ApartmentAdmin(admin.ModelAdmin):
     list_display = ('number_rooms', 'number_floor', 'square', 'price', 'code_building', 'building_info', 'apartment_code')
-    list_filter = ('number_rooms',)
+    list_filter = ('number_rooms', 'number_floor', 'code_building',)
     readonly_fields = ('square',)
+    search_fields = ('apartment_code',)  
+    raw_id_fields=('code_building',)
 
 class StatusApartmentAdmin(admin.ModelAdmin):
     list_display = ('id_apartment', 'status_apartment', 'formatted_date_change', 'id_client')
     date_hierarchy = 'data_change'
-    
-    def id_apartment_display(self, obj):
-        return obj.id_apartment.__str__()
-    id_apartment_display.short_description = 'Квартира'
-    
+    raw_id_fields=('id_client', 'id_apartment',)
+    list_filter = ('status_apartment',)
+
     @admin.display(description='Дата изменения')
     def formatted_date_change(self, obj):
         return obj.data_change.strftime('%d.%m.%Y')
-    
 
 class RegularCustomersInline(admin.TabularInline):  
     model = Deal2
     extra = 1  # Количество пустых форм для добавления новых объектов
-    raw_id_fields=('apartment',)
-    
 
 class RegularCustomersAdmin(admin.ModelAdmin):
-    list_display = ('name_client', 'surname_client', 'number_phone', 'email_client')
-    search_fields = ('name_client', 'surname_client')  
+    list_display = ('id', 'name_client', 'surname_client', 'number_phone', 'email_client')
+    search_fields = ('name_client', 'surname_client', 'id')  
     inlines = [RegularCustomersInline]
-
-    
 
 class Deal2Admin(admin.ModelAdmin):
     list_display = ('apartment', 'client', 'formatted_date_change')
+    raw_id_fields=('client', 'apartment',)
+    date_hierarchy = 'data_deal'
  
     @admin.display(description='Дата изменения')
     def formatted_date_change(self, obj):
@@ -59,6 +55,7 @@ class ApplicationWebsiteAdmin(admin.ModelAdmin):
     list_display = ('formatted_date_change', 'name_client', 'number_phone', 'status_application')
     date_hierarchy = 'date_create3'
     readonly_fields = ('date_create3',)
+    list_filter = ('status_application',)
 
     @admin.display(description='Дата создания заявки')
     def formatted_date_change(self, obj):
