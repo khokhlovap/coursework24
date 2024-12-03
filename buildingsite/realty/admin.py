@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils import timezone
-from .models import InfoBuilding, Apartment, StatusApartment, RegularCustomers, Deal2, ApplicationWebsite
+from .models import InfoBuilding, Apartment, StatusApartment, RegularCustomers, Deal2, ApplicationWebsite, ApartmentPhoto
 
 class ApartmentInline(admin.TabularInline):  # или admin.StackedInline
     model = Apartment
@@ -15,6 +15,10 @@ class InfoBuildingAdmin(admin.ModelAdmin):
     @admin.display(description='Код здания')  # Указываем описание для заголовка столбца
     def formatted_code(self, obj):
         return f'Код: {obj.code_building}'  # Форматируем вывод
+    
+class ApartmentPhotoInline(admin.TabularInline):
+    model = ApartmentPhoto
+    extra = 1  # Количество пустых форм для добавления новых объектов
 
 class ApartmentAdmin(admin.ModelAdmin):
     list_display = ('number_rooms', 'number_floor', 'square', 'price', 'code_building', 'building_info', 'apartment_code')
@@ -22,6 +26,10 @@ class ApartmentAdmin(admin.ModelAdmin):
     readonly_fields = ('square',)
     search_fields = ('apartment_code',)  
     raw_id_fields=('code_building',)
+    inlines = [ApartmentPhotoInline]  # Добавляем inline
+
+class ApartmentPhotoAdmin(admin.ModelAdmin):
+     list_display = ('apartment', 'image', 'description')
 
 class StatusApartmentAdmin(admin.ModelAdmin):
     list_display = ('id_apartment', 'status_apartment', 'formatted_date_change', 'id_client')
@@ -67,3 +75,4 @@ admin.site.register(StatusApartment, StatusApartmentAdmin)
 admin.site.register(RegularCustomers, RegularCustomersAdmin)
 admin.site.register(Deal2, Deal2Admin)
 admin.site.register(ApplicationWebsite, ApplicationWebsiteAdmin)
+admin.site.register(ApartmentPhoto, ApartmentPhotoAdmin)

@@ -32,6 +32,18 @@ class Apartment (models.Model):
         return f"{self.code_building.city}, {self.code_building.street} {self.code_building.number_building}"
     building_info.short_description = 'Информация о здании'
 
+class ApartmentPhoto(models.Model):
+    apartment = models.ForeignKey(Apartment, related_name='photos', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='media/apartment/', verbose_name=u"Фото апартамента")
+    description = models.CharField(max_length=255, blank=True, verbose_name=u"Описание фото")
+
+    class Meta:
+        verbose_name = 'Фото апартамента'
+        verbose_name_plural = 'Фото апартаментов'
+
+    def __str__(self):
+        return f"Фото для {self.apartment.apartment_code}"
+    
 class RegularCustomers(models.Model):
     name_client=models.CharField(max_length=200, verbose_name=u"Имя")
     surname_client=models.CharField(max_length=200, verbose_name=u"Фамилия")
