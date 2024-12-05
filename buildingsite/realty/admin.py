@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.utils import timezone
 from .models import InfoBuilding, Apartment, StatusApartment, RegularCustomers, Deal2, ApplicationWebsite, ApartmentPhoto
+from import_export.admin import ImportExportModelAdmin, ExportActionMixin
+from realty.export import ApartmentResource
+from datetime import datetime
 
 class ApartmentInline(admin.TabularInline):  # или admin.StackedInline
     model = Apartment
@@ -20,13 +23,19 @@ class ApartmentPhotoInline(admin.TabularInline):
     model = ApartmentPhoto
     extra = 1  # Количество пустых форм для добавления новых объектов
 
-class ApartmentAdmin(admin.ModelAdmin):
+class ApartmentAdmin(ImportExportModelAdmin, ExportActionMixin, admin.ModelAdmin):
+    resource_class = ApartmentResource
     list_display = ('number_rooms', 'number_floor', 'square', 'price', 'code_building', 'building_info', 'apartment_code')
     list_filter = ('number_rooms', 'number_floor', 'code_building',)
     readonly_fields = ('square',)
     search_fields = ('apartment_code',)  
     raw_id_fields=('code_building',)
     inlines = [ApartmentPhotoInline]  # Добавляем inline
+
+    def get_export_filename(self, *args, **kwargs):
+        # Получаем текущую дату для добавления в имя файла
+        current_date = datetime.now().strftime('%d.%m.%Y')
+        return f'Apartments_export_{current_date}.csv'
 
 class ApartmentPhotoAdmin(admin.ModelAdmin):
      list_display = ('apartment', 'image', 'description')
