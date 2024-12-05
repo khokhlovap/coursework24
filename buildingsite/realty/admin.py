@@ -32,7 +32,6 @@ class ApartmentAdmin(SimpleHistoryAdmin, ImportExportModelAdmin, ExportActionMix
     search_fields = ('apartment_code',)  
     raw_id_fields=('code_building',)
     inlines = [ApartmentPhotoInline]  # Добавляем inline
-    
 
     def get_export_filename(self, *args, **kwargs):
         # Получаем текущую дату для добавления в имя файла

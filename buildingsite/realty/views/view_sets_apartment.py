@@ -16,30 +16,25 @@ class ApartmentFilter(filters.FilterSet):
         model = Apartment
         fields = ['number_rooms']  
 
-class ApartmentViewSet(viewsets.ModelViewSet):
+class ApartmentViewSet(viewsets.ViewSet):
     serializer_class = ApartmentSerializer
     queryset = Apartment.objects.all()
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ApartmentFilter
 
     def list(self, request):
-        queryset = self.filter_queryset(self.queryset)
-
-        filter_condition = (
-            (Q(square__lte=50) | Q(number_rooms__lte=2)) & 
-            Q(code_building__city='Москва') & ~Q(statusapartment__status_apartment='Продано')
-        )
-        apartments = queryset.filter(filter_condition)
-
-        
-        serializer = ApartmentSerializer(apartments, many=True)
+        queryset = Apartment.objects.all()
+        serializer = ApartmentSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     @action(methods=['get'], detail=False)
     def for_process(self, request):
-            # Получаем квартиры, у которых статус: На рассмотрении
-        apartments_for_process = Apartment.objects.filter(
-            statusapartment__status_apartment='На рассмотрении')
-
-        serializer = ApartmentSerializer(apartments_for_process, many=True)
+            
+        filter_condition = (
+            (Q(square__lte=50) | Q(number_rooms__lte=2)) & 
+            Q(code_building__city='Москва') & ~Q(statusapartment__status_apartment='Продано')
+        )
+        
+        apartments_filter = Apartment.objects.filter(filter_condition)
+        serializer = ApartmentSerializer(apartments_filter, many=True)
         return Response(serializer.data)
