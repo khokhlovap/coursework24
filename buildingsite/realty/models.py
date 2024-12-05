@@ -1,4 +1,5 @@
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 # Create your models here.
 class InfoBuilding(models.Model):
@@ -6,6 +7,7 @@ class InfoBuilding(models.Model):
     city = models.CharField(max_length=200, verbose_name=u"Город")
     street = models.CharField(max_length=200, verbose_name=u"Название улицы")
     number_building = models.CharField(max_length=200, verbose_name=u"№ дома")
+    history = HistoricalRecords()
     
     def __str__(self):
         return f"{self.code_building}"
@@ -21,6 +23,7 @@ class Apartment (models.Model):
     price = models.DecimalField(max_digits=12, decimal_places=3, verbose_name=u"Стоимость")
     code_building = models.ForeignKey(InfoBuilding, verbose_name=u"Код здания", on_delete=models.CASCADE)
     apartment_code = models.CharField(null=True, blank=True, max_length=50, unique=True, verbose_name='Код апартамента')
+    history = HistoricalRecords()
     class Meta:
         verbose_name = 'Апартаменты'
         verbose_name_plural = 'Апартаменты'
@@ -36,6 +39,7 @@ class ApartmentPhoto(models.Model):
     apartment = models.ForeignKey(Apartment, related_name='photos', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='media/apartment/', verbose_name=u"Фото апартамента")
     description = models.CharField(max_length=255, blank=True, verbose_name=u"Описание фото")
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'Фото апартамента'
@@ -50,7 +54,7 @@ class RegularCustomers(models.Model):
     number_phone=models.CharField(max_length=20, verbose_name=u"Номер телефона")
     email_client=models.EmailField(max_length=255, null=False, blank=False, verbose_name=u"Почта")
     deal2=models.ManyToManyField(Apartment, through="Deal2", related_name='aparts')
-   
+    history = HistoricalRecords()
     def __str__(self):
         return f"{self.id}"
    
@@ -68,6 +72,7 @@ class StatusApartment(models.Model):
     status_apartment=models.CharField(max_length=200, verbose_name=u"Статус апартамента", choices=APPLICATION_STATUS_APARTMENT)
     data_change=models.DateField(null=True, blank=True, verbose_name=u"Дата изменения статуса")
     id_client = models.ForeignKey(RegularCustomers, on_delete=models.CASCADE, verbose_name=u"Клиент", null=True, blank=True)
+    history = HistoricalRecords()
     class Meta:
         verbose_name = 'Статус Апартаментов'
         verbose_name_plural = 'Статус Апартаментов'
@@ -80,7 +85,7 @@ class Deal2(models.Model):
     apartment=models.ForeignKey(Apartment, on_delete=models.CASCADE, verbose_name=u"Код Апартамента", related_name='deals')
     client=models.ForeignKey(RegularCustomers, on_delete=models.CASCADE, verbose_name=u"ID Клиента", related_name="deals")
     data_deal=models.DateField(null=True, blank=True, verbose_name=u"Дата сделки")
-   
+    history = HistoricalRecords()
     class Meta:
         verbose_name = 'Сделка - продано'
         verbose_name_plural = 'Сделка - продано'
@@ -95,6 +100,7 @@ class ApplicationWebsite(models.Model):
     status_application=models.CharField(max_length=200, verbose_name=u"Статус заявки", choices=APPLICATION_STATUS_CHOICES)
     # date_create2 = models.DateTimeField(auto_now=True)
     date_create3 = models.DateTimeField(auto_now=True, verbose_name=u"Дата создания заявки")
+    history = HistoricalRecords()
     class Meta:
         verbose_name = 'Заявки с сайта'
         verbose_name_plural = 'Заявки с сайта'
