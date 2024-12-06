@@ -27,11 +27,3 @@ class InfobuildingSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Номер дома должен быть больше нуля.")
     
         return value  # Возвращаем оригинальное значение
-
-
-
-
-
-        # if value <= 0:
-        #     raise serializers.ValidationError("Номер дома должен быть больше нуля.")
-        # return value

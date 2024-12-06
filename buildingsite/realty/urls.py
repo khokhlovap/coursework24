@@ -8,22 +8,11 @@ from realty.views.models_view_set_applicationwebsite import ApplicationModelView
 
 router = DefaultRouter()
 router.register(r'apartment-viewset', ApartmentViewSet, basename='apartment-viewset')
-urlpatterns = [
-    path('', include(router.urls)),
-]
-
 router.register(r'infobuilding-viewset', InfobuildingModelViewSet, basename='infobuilding-viewset')
-urlpatterns = [
-    path('', include(router.urls)),
-    path('number/<int:number>/', InfobuildingByNumberView.as_view(), name='infobuilding-by-number')
-]
-
 router.register(r'regularcustomers-viewset', RegularCustomersModelViewSet, basename='regularcustomers-viewset')
-urlpatterns = [
-    path('', include(router.urls)),
-]
-
 router.register(r'applicationwebsite-viewset', ApplicationModelViewSet, basename='applicationwebsite-viewset')
+
 urlpatterns = [
     path('', include(router.urls)),
+    path('code_building/<int:code_building>/', InfobuildingByNumberView.as_view(), name='infobuilding-by-number')
 ]

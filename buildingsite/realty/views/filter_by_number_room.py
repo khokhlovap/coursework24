@@ -1,11 +1,10 @@
 from rest_framework import generics
-from realty.serializers.infobuilding import InfobuildingSerializer
 from realty.models import InfoBuilding
+from realty.serializers.infobuilding import InfobuildingSerializer
 
 class InfobuildingByNumberView(generics.ListAPIView):
     serializer_class=InfobuildingSerializer
 
     def get_queryset(self):
-        number = self.kwargs['number']
-        return InfoBuilding.objects.filter(code_building=number)
-    
+        code_building = self.kwargs.get('code_building')
+        return InfoBuilding.objects.filter(code_building=code_building)
