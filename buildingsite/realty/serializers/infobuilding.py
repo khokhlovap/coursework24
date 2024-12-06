@@ -18,6 +18,20 @@ class InfobuildingSerializer(serializers.ModelSerializer):
         return value
     
     def validate_number_building(self, value):
-        if value <= 0:
+        try:
+            number = int(value)  # Пробуем преобразовать строку в целое число
+        except ValueError:
+            raise serializers.ValidationError("Номер дома должен быть числом.")
+    
+        if number <= 0:
             raise serializers.ValidationError("Номер дома должен быть больше нуля.")
-        return value
+    
+        return value  # Возвращаем оригинальное значение
+
+
+
+
+
+        # if value <= 0:
+        #     raise serializers.ValidationError("Номер дома должен быть больше нуля.")
+        # return value

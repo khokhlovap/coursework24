@@ -22,6 +22,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("realty/", include("realty.urls")),
     path("admin/", admin.site.urls),
+    path('api/', include('realty.urls')),
+
 ]
 
 if settings.DEBUG:
