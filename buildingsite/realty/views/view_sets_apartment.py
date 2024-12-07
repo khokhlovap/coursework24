@@ -1,4 +1,3 @@
-from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -6,24 +5,20 @@ from realty.models import Apartment, RegularCustomers, Deal2
 from django.db.models import Q
 from realty.serializers.apartment import ApartmentSerializer
 from django_filters import rest_framework as filters
-
 from rest_framework.decorators import action
+from realty.views.filter_price import PriceFilter
+from rest_framework.filters import OrderingFilter
 
-class ApartmentFilter(filters.FilterSet):
-    number_rooms = filters.NumberFilter()
 
-    class Meta:
-        model = Apartment
-        fields = ['number_rooms']  
-
-class ApartmentViewSet(viewsets.ViewSet):
+class ApartmentViewSet(viewsets.ModelViewSet):
     serializer_class = ApartmentSerializer
     queryset = Apartment.objects.all()
-    filter_backends = (DjangoFilterBackend,)
-    filterset_class = ApartmentFilter
-
+    filterset_class = PriceFilter
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter)
+    ordering_fields = ['price', 'square']  
+    
     def list(self, request):
-        queryset = Apartment.objects.all()
+        queryset = self.filter_queryset(self.get_queryset())
         serializer = ApartmentSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
