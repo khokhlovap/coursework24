@@ -28,18 +28,14 @@ class ApplicationModelViewSet(viewsets.ModelViewSet):
         serializer = ApplicationWebsiteSerializer(application_filter, many=True)
         return Response(serializer.data)
 
-    @action(methods=['post'], detail=True)
+    @action(methods=['post', 'get'], detail=True)
     def update_status(self, request, pk=None):
-        application = self.get_object() 
-        serializer = ApplicationWebsiteSerializer(application, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
+        application = self.get_object()
+        new_status = request.data.get('status_application', None)  # Получаем новый статус из запроса
 
+        if new_status is not None:
+            application.status_application = new_status
+            application.save()
             return Response({"message": "статус изменен"}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    def get_serializer_class(self):
-
-        if self.action == 'status_application':
-            return ApplicationWebsiteSerializer
-        return super().get_serializer_class()
+        
+        return Response({"error": "Статус не указан"}, status=status.HTTP_400_BAD_REQUEST)
