@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from realty.views.view_sets_apartment import ApartmentViewSet
 from realty.views.view_sets_infobuilding import InfobuildingModelViewSet
-from realty.views.filter_by_number_room import InfobuildingByNumberView
+from realty.views.filter_by_code_building import InfobuildingByNumberView
 from realty.views.model_view_set_customers import RegularCustomersModelViewSet
 from realty.views.models_view_set_applicationwebsite import ApplicationModelViewSet
 
