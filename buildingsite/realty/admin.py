@@ -70,14 +70,24 @@ class StatusApartmentAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
     def formatted_date_change(self, obj):
         return obj.data_change.strftime('%d.%m.%Y')
 
+class RegularCustomersResource(resources.ModelResource):
+    class Meta:
+        model = RegularCustomers
+        fields = ('name_client', 'surname_client', 'number_phone', 'email_client')
+    
 class RegularCustomersInline(admin.TabularInline):  
     model = Deal2
     extra = 1  # Количество пустых форм для добавления новых объектов
 
-class RegularCustomersAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
+class RegularCustomersAdmin(SimpleHistoryAdmin, ImportExportModelAdmin,  ExportActionMixin, admin.ModelAdmin):
+    resource_class = RegularCustomersResource
     list_display = ('id', 'name_client', 'surname_client', 'number_phone', 'email_client')
     search_fields = ('name_client', 'surname_client', 'id')  
     inlines = [RegularCustomersInline]
+
+    def get_export_filename(self, *args, **kwargs):
+        current_date = datetime.now().strftime('%d.%m.%Y') # Получаем текущую дату для добавления в имя файла
+        return f'RegularCustomers_export_{current_date}.csv'
 
 class Deal2Admin(SimpleHistoryAdmin, admin.ModelAdmin):
     list_display = ('apartment', 'client', 'formatted_date_change')
