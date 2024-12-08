@@ -5,20 +5,7 @@ from rest_framework.decorators import action
 from realty.paginations.applicationwebsite import ApplicationPagination
 from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
-from rest_framework import serializers
-from realty.models import ApplicationWebsite
-
-class ApplicationWebsiteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ApplicationWebsite
-        fields = ['id', 'name_client', 'number_phone', 'status_application', 'date_create3']
-
-class StatusApplicationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ApplicationWebsite
-        fields = ['status_application']
-
+from realty.serializers.applicationwebsite import ApplicationWebsiteSerializer, StatusApplicationSerializer
 
 class ApplicationModelViewSet(viewsets.ModelViewSet):
     queryset = ApplicationWebsite.objects.all()
