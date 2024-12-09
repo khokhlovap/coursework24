@@ -37,8 +37,9 @@ class ApplicationModelViewSet(viewsets.ModelViewSet):
         serializer = ApplicationWebsiteSerializer(application_filter, many=True)
         return Response(serializer.data)
 
-    @action(methods=['post', 'get'], detail=True)
+    @action(methods=['post'], detail=True)
     def update_status(self, request, pk=None):
+        """Запрос post изменяем статус заявки"""
         application = self.get_object()
         serializer = StatusApplicationSerializer(application, data=request.data, partial=True)
 
