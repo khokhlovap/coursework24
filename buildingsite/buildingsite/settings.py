@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'import_export',
     'simple_history',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
