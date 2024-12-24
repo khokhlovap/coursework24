@@ -4,14 +4,12 @@ from simple_history.models import HistoricalRecords
 # Create your models here.
 class InfoBuilding(models.Model):
     code_building = models.IntegerField(default=0, verbose_name=u"Код дома")
-    city = models.CharField(max_length=200, verbose_name=u"Город")
+    city = models.CharField(max_length=200, verbose_name= u"Город")
     street = models.CharField(max_length=200, verbose_name=u"Название улицы")
     number_building = models.CharField(max_length=200, verbose_name=u"№ дома")
     history = HistoricalRecords()
-    
     def __str__(self):
         return f"{self.code_building}"
-    
     class Meta:
         verbose_name = 'Информация о ЖК'
         verbose_name_plural = 'Информация о ЖК'
