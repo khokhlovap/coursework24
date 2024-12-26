@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
+    'realty',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,7 +43,6 @@ INSTALLED_APPS = [
     'import_export',
     'simple_history',
     'drf_yasg',
-    'realty',
     'django_celery_beat',
 ]
 

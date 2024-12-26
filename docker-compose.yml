@@ -12,12 +12,20 @@ services:
     image: redis:alpine
   celery:
     build: .
-    command: celery -A buildingsite.buildingsite worker -l info
+    command: celery -A buildingsite worker -l info
+    volumes:
+      - ./:/app
     depends_on:
       - redis
+    environment:
+      - DJANGO_SETTINGS_MODULE=buildingsite.settings
   celerybeat:
     build: .
-    command: celery -A buildingsite.buildingsite beat -l info
+    command: celery -A buildingsite beat -l info
+    volumes:
+      - ./:/app
     depends_on:
       - redis
       - web
+    environment:
+      - DJANGO_SETTINGS_MODULE=buildingsite.settings

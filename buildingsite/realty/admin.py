@@ -15,11 +15,18 @@ from .models import InfoBuilding, Apartment, StatusApartment, RegularCustomers, 
 
 
 class ApartmentInline(admin.TabularInline):
+    """
+    Создаем inline, связь многие ко многим таблица Apartment и Infobuilding
+    """
+
     model = Apartment
     extra = 1  # Количество пустых форм для добавления новых объектов
 
 
 class InfoBuildingAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
+    """
+    Админка таблицы Информация о здании
+    """
     list_display = ('formatted_code', 'city', 'street', 'number_building')
     list_filter = ('city', 'code_building',)
     list_display_links = ('city',)
@@ -31,12 +38,17 @@ class InfoBuildingAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
 
 
 class ApartmentPhotoInline(admin.TabularInline):
+    """
+    Создаем inline, связь многие ко многим таблица Apartment и Infobuilding
+    """
     model = ApartmentPhoto
     extra = 1  # Количество пустых форм для добавления новых объектов
 
 
 class ApartmentResource(resources.ModelResource):
-
+    """
+    Подготовка бд к экспорту
+    """
     class Meta:
         model = Apartment
         fields = ('number_rooms', 'number_floor', 'square',
@@ -53,6 +65,10 @@ class ApartmentResource(resources.ModelResource):
 
 class ApartmentAdmin(SimpleHistoryAdmin, ImportExportModelAdmin,
                      ExportActionMixin, admin.ModelAdmin):
+    """
+    Админка таблица Апартаменты
+    """
+
     resource_class = ApartmentResource
     list_display = ('number_rooms', 'number_floor', 'square', 'price',
                     'code_building', 'building_info', 'apartment_code')
@@ -75,6 +91,7 @@ class ApartmentAdmin(SimpleHistoryAdmin, ImportExportModelAdmin,
 
 
 class ApartmentPhotoAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
+    """"""
     list_display = ('apartment', 'image', 'description')
 
 
