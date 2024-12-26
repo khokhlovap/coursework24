@@ -140,6 +140,11 @@ REST_FRAMEWORK = {
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mailhog'
+EMAIL_PORT = 1025
+EMAIL_USE_TLS = False      # С использованием TLS
+
 # настройки Celery
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
@@ -152,5 +157,15 @@ CELERY_BEAT_SCHEDULE = {
     'decrease-apartment-prices-monthly': {
         'task': 'realty.tasks.decrease_apartment_prices',
         'schedule': 5
+    },
+
+    'send-january-reminder-emails': {
+        'task': 'realty.tasks.send_email_january',
+        'schedule': crontab(hour=12, minute=0, day_of_month='31', month_of_year='12'),  # 31 декабря
+        'args': [
+            'partment_client@example.com',
+            'Новый Год в новых Апартаментах',
+            'Ознакомьтесь с праздничными ценами на апартаменты!'
+        ],
     },
 }
