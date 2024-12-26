@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'realty.apps.RealtyConfig',
     'rest_framework',
     'django_filters',
     'django.contrib.admin',
@@ -43,6 +42,8 @@ INSTALLED_APPS = [
     'import_export',
     'simple_history',
     'drf_yasg',
+    'realty',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,11 @@ REST_FRAMEWORK = {
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# настройки Celery
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'

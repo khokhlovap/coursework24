@@ -1,0 +1,23 @@
+services:
+  web:
+    build: .
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - celery
+  redis:
+    image: redis:alpine
+  celery:
+    build: .
+    command: celery -A buildingsite.buildingsite worker -l info
+    depends_on:
+      - redis
+  celerybeat:
+    build: .
+    command: celery -A buildingsite.buildingsite beat -l info
+    depends_on:
+      - redis
+      - web
