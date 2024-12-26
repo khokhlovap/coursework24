@@ -16,7 +16,8 @@ class InfoBuilding(models.Model):
     class Meta:
         verbose_name = 'Информация о ЖК'
         verbose_name_plural = 'Информация о ЖК'
-    
+
+
 class Apartment (models.Model):
     number_rooms = models.SmallIntegerField(verbose_name=u"Количество комнат")
     number_floor = models.SmallIntegerField(verbose_name=u"Номер этажа")

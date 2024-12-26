@@ -1,11 +1,12 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from realty.models import ApplicationWebsite
 from rest_framework.decorators import action
-from realty.paginations.applicationwebsite import ApplicationPagination
 from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
-from realty.serializers.applicationwebsite import ApplicationWebsiteSerializer, StatusApplicationSerializer
+from realty.models import ApplicationWebsite
+from realty.paginations.applicationwebsite import ApplicationPagination
+from realty.serializers.applicationwebsite import ApplicationWebsiteSerializer, \
+    StatusApplicationSerializer
 
 class ApplicationModelViewSet(viewsets.ModelViewSet):
     queryset = ApplicationWebsite.objects.all()
@@ -17,11 +18,12 @@ class ApplicationModelViewSet(viewsets.ModelViewSet):
     @action(methods=['get'], detail=False)
     def application_website_filter(self, request):
 
-        """Фильтр отражает заявки, которые одновременно имеют статус "Принято" и соответствуют хотя бы одному из условий 
+        """Фильтр отражает заявки, которые одновременно имеют статус
+        "Принято" и соответствуют хотя бы одному из условий
         (либо имя "Адександр", либо номер телефона не содержит "9911")"""
 
         filter_condition = (
-            Q(status_application='accepted') & 
+            Q(status_application='accepted') &
             (Q(name_client='Александер') | ~Q(number_phone__contains='9911'))
         )
 
@@ -29,9 +31,11 @@ class ApplicationModelViewSet(viewsets.ModelViewSet):
         number_phone = request.query_params.get('number_phone', None)
 
         if name_client:
-            filter_condition &= Q(name_client__icontains=name_client)  # Фильтрация по имени клиента
+            # Фильтрация по имени клиента
+            filter_condition &= Q(name_client__icontains=name_client)
         if number_phone:
-            filter_condition &= ~Q(number_phone__contains=number_phone)  # Фильтрация по номеру телефона
+            # Фильтрация по номеру телефона
+            filter_condition &= ~Q(number_phone__contains=number_phone)
 
         application_filter = ApplicationWebsite.objects.filter(filter_condition)
         serializer = ApplicationWebsiteSerializer(application_filter, many=True)
