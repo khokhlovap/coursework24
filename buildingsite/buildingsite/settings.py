@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 from celery.schedules import crontab
 
@@ -146,13 +147,20 @@ EMAIL_PORT = 1025
 EMAIL_USE_TLS = False      # С использованием TLS
 
 # настройки Celery
-CELERY_BROKER_URL = 'redis://redis:6379'
-CELERY_RESULT_BACKEND = 'redis://redis:6379'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'UTC'
-CELERY_TASK_MODULES = ['realty.tasks']
+# CELERY_BROKER_URL = 'redis://redis:6379'
+# CELERY_RESULT_BACKEND = 'redis://redis:6379'
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'UTC'
+# CELERY_TASK_MODULES = ['realty.tasks']
+# Определяем, запущено ли приложение в Docker
+RUNNING_IN_DOCKER = os.environ.get('RUNNING_IN_DOCKER', False)
+# Настраиваем Redis URL в зависимости от окружения
+REDIS_HOST = 'redis' if RUNNING_IN_DOCKER else 'localhost'
+REDIS_URL = f'redis://{REDIS_HOST}:6379'
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_BEAT_SCHEDULE = {
     'decrease-apartment-prices-monthly': {
         'task': 'realty.tasks.decrease_apartment_prices',
@@ -161,7 +169,7 @@ CELERY_BEAT_SCHEDULE = {
 
     'send-january-reminder-emails': {
         'task': 'realty.tasks.send_email_january',
-        'schedule': 5, # 31 декабря
+        'schedule': 10,
         'args': [
             'aprtment_client@example.com',
             'Новый Год в новых Апартаментах',
@@ -170,12 +178,22 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
+# CACHES = {
+#         'default': {
+#             'BACKEND': 'django_redis.cache.RedisCache',
+#             'LOCATION': 'redis://redis:6379',
+#             'OPTIONS': {
+#                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#             }
+#         }
+# }
+
 CACHES = {
-        'default': {
-            'BACKEND': 'django_redis.cache.RedisCache',
-            'LOCATION': 'redis://redis:6379',
-            'OPTIONS': {
-                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            }
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': REDIS_URL,
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
+    }
 }

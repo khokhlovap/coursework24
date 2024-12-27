@@ -3,6 +3,7 @@
 """
 from django.core.cache import cache
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
 from realty.models import Apartment
 from realty.serializers.apartment import ApartmentSerializer
@@ -39,7 +40,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         serializer = ApartmentSerializer(apartments_filter, many=True)
         return Response(serializer.data)
 
-    def get_apartment(apartment_id):
+    def get_apartment(self, apartment_id):
         """
         Получает апартамент. Сначала проверяет кэш, затем базу данных. не работает
         """
@@ -48,10 +49,14 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         # Проверяем наличие данных в кэше
         apartment = cache.get(cache_key)
         if apartment is None:
+            print("Cache miss - getting from database")
+
             # Если данных нет в кэше, извлекаем из базы
-            apartment = list(Apartment.objects.filter(apartment_id=apartment_id))
+            apartment = get_object_or_404(Apartment, pk=apartment_id)
             # Сохраняем в кэш на 15 минут
             cache.set(cache_key, apartment, timeout=60 * 15)
+        else:
+            print("Cache hit - getting from Redis")
         return apartment
 
 

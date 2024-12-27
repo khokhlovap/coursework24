@@ -15,7 +15,7 @@ def decrease_apartment_prices():
     каждый 26 числа месяца.
     """
     today = date.today()
-    eleventh_day = date(today.year, today.month, 26)
+    eleventh_day = date(today.year, today.month, 27)
 
     # Проверяем, если сегодня 26 число
     if today == eleventh_day:

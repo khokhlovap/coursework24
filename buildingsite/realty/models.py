@@ -54,8 +54,9 @@ class Apartment (models.Model):
         Отображение строки с информацией о местоположении и идентификаторах здания,
         включая город, улицу и номер здания
         """
-        return f"{self.code_building.city}, {self.code_building.street} " \ 
-               f"{self.code_building.number_building}"  # pylint: disable=no-member
+        return (f"{self.code_building.city}, {self.code_building.street} "
+                f"{self.code_building.number_building}")  # pylint: disable=no-member
+
     building_info.short_description = 'Информация о здании'
 
 class ApartmentPhoto(models.Model):

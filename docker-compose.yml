@@ -9,6 +9,8 @@ services:
       - redis
       - celery
       - mailhog
+    environment:
+      - RUNNING_IN_DOCKER=True
   redis:
     image: redis:alpine
     ports:
