@@ -1,6 +1,9 @@
-from rest_framework import generics
+"""
+Фильтр для таблицы Infobuilding
+"""
 from realty.models import InfoBuilding
 from realty.serializers.infobuilding import InfobuildingSerializer
+from rest_framework import generics
 
 
 class InfobuildingByNumberView(generics.ListAPIView):

@@ -146,8 +146,8 @@ EMAIL_PORT = 1025
 EMAIL_USE_TLS = False      # С использованием TLS
 
 # настройки Celery
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_RESULT_BACKEND = 'redis://redis:6379'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -161,11 +161,21 @@ CELERY_BEAT_SCHEDULE = {
 
     'send-january-reminder-emails': {
         'task': 'realty.tasks.send_email_january',
-        'schedule': crontab(hour=12, minute=0, day_of_month='31', month_of_year='12'),  # 31 декабря
+        'schedule': 5, # 31 декабря
         'args': [
-            'partment_client@example.com',
+            'aprtment_client@example.com',
             'Новый Год в новых Апартаментах',
             'Ознакомьтесь с праздничными ценами на апартаменты!'
         ],
     },
+}
+
+CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': 'redis://redis:6379',
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            }
+        }
 }

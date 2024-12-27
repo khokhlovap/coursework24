@@ -11,6 +11,8 @@ services:
       - mailhog
   redis:
     image: redis:alpine
+    ports:
+      - "6379:6379"
   mailhog:
     image: mailhog/mailhog:latest
     ports:

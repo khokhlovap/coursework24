@@ -1,14 +1,21 @@
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from rest_framework.decorators import action
+"""
+Вьюшка Заявки с сайта
+"""
 from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from realty.models import ApplicationWebsite
 from realty.paginations.applicationwebsite import ApplicationPagination
 from realty.serializers.applicationwebsite import ApplicationWebsiteSerializer, \
     StatusApplicationSerializer
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
 
 class ApplicationModelViewSet(viewsets.ModelViewSet):
+    """
+    Вьюшка для ApplicationWebsite
+    """
     queryset = ApplicationWebsite.objects.all()
     serializer_class = ApplicationWebsiteSerializer
     pagination_class = ApplicationPagination

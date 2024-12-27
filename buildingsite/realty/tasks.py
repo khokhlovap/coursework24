@@ -1,7 +1,12 @@
+"""
+Периодические задачи celery
+"""
 from datetime import date
 from celery import shared_task
-from .models import Apartment, RegularCustomers
 from django.core.mail import send_mail
+
+from .models import Apartment, RegularCustomers
+
 
 @shared_task
 def decrease_apartment_prices():
@@ -22,7 +27,8 @@ def decrease_apartment_prices():
                 new_price = current_price - discount
                 apartment.price = new_price
                 apartment.save()
-                print(f"Цена для апартамента {apartment.apartment_code} снижена до {apartment.price}")
+                print(f"Цена для апартамента {apartment.apartment_code} "
+                      f"снижена до {apartment.price}")
 
 
 @shared_task
@@ -47,4 +53,3 @@ def send_email_january(recipient_email, subject, message):
     )
 
     return f"Письмо отправлено на {recipient_email}"
-

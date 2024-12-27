@@ -6,10 +6,11 @@ admin.py
 """
 
 from datetime import datetime
+from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin, ExportActionMixin
 from simple_history.admin import SimpleHistoryAdmin
-from django.contrib import admin
+
 from .models import InfoBuilding, Apartment, StatusApartment, RegularCustomers, Deal2, \
     ApplicationWebsite, ApartmentPhoto
 
@@ -34,7 +35,10 @@ class InfoBuildingAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
 
     @admin.display(description='Код здания')  # Указываем описание для заголовка столбца
     def formatted_code(self, obj):
-        return f'Код: {obj.code_building}'  # Форматируем вывод
+        """
+        Форматируем вывод
+        """
+        return f'Код: {obj.code_building}'
 
 
 class ApartmentPhotoInline(admin.TabularInline):
@@ -49,7 +53,10 @@ class ApartmentResource(resources.ModelResource):
     """
     Подготовка бд к экспорту
     """
-    class Meta:
+    class Meta: # pylint: disable=too-few-public-methods
+        """
+        Поля для экспорта
+        """
         model = Apartment
         fields = ('number_rooms', 'number_floor', 'square',
                   'price', 'code_building', 'apartment_code')
@@ -91,11 +98,14 @@ class ApartmentAdmin(SimpleHistoryAdmin, ImportExportModelAdmin,
 
 
 class ApartmentPhotoAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
-    """"""
+    """Класс медиа"""
     list_display = ('apartment', 'image', 'description')
 
 
 class StatusApartmentAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
+    """
+    Админка таблица Статус апартаментов
+    """
     list_display = ('id_apartment', 'status_apartment', 'formatted_date_change', 'id_client')
     date_hierarchy = 'data_change'
     raw_id_fields = ('id_client', 'id_apartment',)
@@ -103,22 +113,37 @@ class StatusApartmentAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
 
     @admin.display(description='Дата изменения')
     def formatted_date_change(self, obj):
+        """
+        Форматируем ормат даты
+        """
         return obj.data_change.strftime('%d.%m.%Y')
 
 
 class RegularCustomersResource(resources.ModelResource):
-    class Meta:
+    """
+    Подготовка таблицы Постоянные клиенты для экспорта
+    """
+    class Meta: # pylint: disable=too-few-public-methods
+        """
+        Поля таблицы для экспорта
+        """
         model = RegularCustomers
         fields = ('name_client', 'surname_client', 'number_phone', 'email_client')
 
 
 class RegularCustomersInline(admin.TabularInline):
+    """
+       Создаем inline таблица Постоянные клиенты
+    """
     model = Deal2
     extra = 1  # Количество пустых форм для добавления новых объектов
 
 
 class RegularCustomersAdmin(SimpleHistoryAdmin, ImportExportModelAdmin,
                             ExportActionMixin, admin.ModelAdmin):
+    """
+    Админка Постоянные клиенты
+    """
     resource_class = RegularCustomersResource
     list_display = ('id', 'name_client', 'surname_client', 'number_phone', 'email_client')
     search_fields = ('name_client', 'surname_client', 'id')
@@ -131,17 +156,29 @@ class RegularCustomersAdmin(SimpleHistoryAdmin, ImportExportModelAdmin,
 
 
 class Deal2Admin(SimpleHistoryAdmin, admin.ModelAdmin):
+    """
+    Админка Сделка
+    """
     list_display = ('apartment', 'client', 'formatted_date_change')
     raw_id_fields = ('client', 'apartment',)
     date_hierarchy = 'data_deal'
 
     @admin.display(description='Дата изменения')
     def formatted_date_change(self, obj):
+        """
+        Форматируем формат даты
+        """
         return obj.data_deal.strftime('%d.%m.%Y')
 
 
 class ApplicationWebsiteResource(resources.ModelResource):
-    class Meta:
+    """
+    Подготовка таблицы Заявки с сайта для экспорта в эксель
+    """
+    class Meta: # pylint: disable=too-few-public-methods
+        """
+        Поля таблицы для экспорта
+        """
         model = ApplicationWebsite
         fields = ('name_client', 'number_phone', 'status_application', 'date_create3')
 
@@ -153,12 +190,15 @@ class ApplicationWebsiteResource(resources.ModelResource):
         return "Отклонено"
 
     def dehydrate_date_create3(self, application_website):
-        # Изменяем формат даты на дд.мм.гг
+        """Изменяем формат даты на дд.мм.гг"""
         return application_website.date_create3.strftime('%d.%m.%y')
 
 
 class ApplicationWebsiteAdmin(SimpleHistoryAdmin, ImportExportModelAdmin,
                               ExportActionMixin, admin.ModelAdmin):
+    """
+    Админка заявки с сайта
+    """
     resource_class = ApplicationWebsiteResource
     list_display = ('formatted_date_change', 'name_client', 'number_phone', 'status_application')
     date_hierarchy = 'date_create3'
@@ -167,6 +207,9 @@ class ApplicationWebsiteAdmin(SimpleHistoryAdmin, ImportExportModelAdmin,
 
     @admin.display(description='Дата создания заявки')
     def formatted_date_change(self, obj):
+        """
+        Форматируем формат даты
+        """
         return obj.date_create3.strftime('%d.%m.%Y')
 
     def get_export_filename(self,  *args, **kwargs):

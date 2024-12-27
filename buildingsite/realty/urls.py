@@ -1,10 +1,14 @@
+"""
+Подключение urls
+"""
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from realty.views.view_sets_apartment import ApartmentViewSet
-from realty.views.view_sets_infobuilding import InfobuildingModelViewSet
 from realty.views.filter_by_code_building import InfobuildingByNumberView
-from realty.views.model_view_set_customers import RegularCustomersModelViewSet
 from realty.views.models_view_set_applicationwebsite import ApplicationModelViewSet
+from realty.views.view_sets_apartment import ApartmentViewSet
+from realty.views.model_view_set_customers import RegularCustomersModelViewSet
+from realty.views.view_sets_infobuilding import InfobuildingModelViewSet
+
 
 router = DefaultRouter()
 router.register(r'apartment-viewset', ApartmentViewSet, basename='apartment-viewset')
