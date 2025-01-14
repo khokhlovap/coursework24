@@ -49,6 +49,7 @@ class Apartment (models.Model):
         """
         verbose_name = 'Апартаменты'
         verbose_name_plural = 'Апартаменты'
+        ordering = ['-code_building']
     def __str__(self):
         return f"{self.apartment_code}"
     def building_info(self):
