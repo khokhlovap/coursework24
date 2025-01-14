@@ -4,6 +4,7 @@
 
 from django.db import models
 from simple_history.models import HistoricalRecords
+from django.utils import timezone
 
 
 class InfoBuilding(models.Model):
@@ -14,6 +15,7 @@ class InfoBuilding(models.Model):
     city = models.CharField(max_length=200, verbose_name= "Город")
     street = models.CharField(max_length=200, verbose_name="Название улицы")
     number_building = models.CharField(max_length=200, verbose_name="№ дома")
+    updated = models.DateTimeField(auto_now=True)
     history = HistoricalRecords()
 
     def __str__(self):

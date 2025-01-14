@@ -28,7 +28,7 @@ class InfoBuildingAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
     """
     Админка таблицы Информация о здании
     """
-    list_display = ('formatted_code', 'city', 'street', 'number_building')
+    list_display = ('formatted_code', 'city', 'street', 'number_building', 'formatted_date_change')
     list_filter = ('city', 'code_building',)
     list_display_links = ('city',)
     inlines = [ApartmentInline]  # Добавляем inline
@@ -39,6 +39,13 @@ class InfoBuildingAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
         Форматируем вывод
         """
         return f'Код: {obj.code_building}'
+
+    @admin.display(description='Дата последнего обновления')
+    def formatted_date_change(self, obj):
+        """
+        Форматируем формат даты
+        """
+        return obj.updated.strftime('%d.%m.%Y')
 
 
 class ApartmentPhotoInline(admin.TabularInline):
