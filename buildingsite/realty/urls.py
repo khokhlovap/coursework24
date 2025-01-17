@@ -10,6 +10,8 @@ from realty.views.model_view_set_customers import RegularCustomersModelViewSet
 from realty.views.view_sets_infobuilding import InfobuildingModelViewSet
 InfobuildingModelViewSet
 from realty.views.views import apartment_list, apartment_detail
+
+
 router = DefaultRouter()
 router.register(r'apartment-viewset', ApartmentViewSet, basename='apartment-viewset')
 router.register(r'infobuilding-viewset', InfobuildingModelViewSet, basename='infobuilding-viewset')

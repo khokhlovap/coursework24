@@ -8,9 +8,11 @@ admin.py
 from datetime import datetime
 from django.contrib import admin
 from import_export import resources
+from django.urls import reverse
+from django.utils.html import format_html
 from import_export.admin import ImportExportModelAdmin, ExportActionMixin
 from simple_history.admin import SimpleHistoryAdmin
-
+from realty.views.pdf import export_to_pdf
 from .models import InfoBuilding, Apartment, StatusApartment, RegularCustomers, Deal2, \
     ApplicationWebsite, ApartmentPhoto
 
@@ -28,10 +30,11 @@ class InfoBuildingAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
     """
     Админка таблицы Информация о здании
     """
-    list_display = ('formatted_code', 'city', 'street', 'number_building', 'formatted_date_change')
+    list_display = ('formatted_code', 'city', 'street', 'number_building', 'formatted_date_change', 'file_document', 'website_url')
     list_filter = ('city', 'code_building',)
     list_display_links = ('city',)
     inlines = [ApartmentInline]  # Добавляем inline
+    actions = [export_to_pdf]
 
     @admin.display(description='Код здания')  # Указываем описание для заголовка столбца
     def formatted_code(self, obj):
@@ -46,7 +49,6 @@ class InfoBuildingAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
         Форматируем формат даты
         """
         return obj.updated.strftime('%d.%m.%Y')
-
 
 class ApartmentPhotoInline(admin.TabularInline):
     """
