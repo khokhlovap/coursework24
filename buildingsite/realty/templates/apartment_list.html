@@ -1,0 +1,83 @@
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список Апартаментов</title>
+</head>
+<body>
+    <h1>{% greet_with_context "Полина" %}</h1>
+    <h2>Сегодня: {{ today|date:"d.m.Y" }}</h2>
+    <h2>Средняя цена квартиры в Москве: {{ avg_moscow_price|floatformat:2 }} рублей</h2>  <!-- Отображаем среднюю цену -->
+    <h2>Количество Заявок: {% count_applications %}</h2>
+    <h3>Апартаменты</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Код Апартамента</th>
+                <th>Количество Комнат</th>
+                <th>Этаж</th>
+                <th>Площадь (кв.м)</th>
+                <th>Стоимость</th>
+                <th>Информация о Здании</th>
+                <th>Код здания</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for apartment in apartments %}
+                <tr>
+                    <td>{{ apartment.apartment_code }}</td>
+                    <td>{{ apartment.number_rooms }}</td>
+                    <td>{{ apartment.number_floor }}</td>
+                    <td>{{ apartment.square }}</td>
+                    <td>{{ apartment.price }}</td>
+                    <td>{{ apartment.building_info }}</td>
+                    <td>{{ apartment.code_building }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        {% for apartment in apartments %}
+        <li>
+            <a href="{{ apartment.get_absolute_url }}">{{ apartment.apartment_code }}</a> - {{ apartment.price }} рублей
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h3>Постоянные клиенты</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Телефон</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.name_client }}</td>
+                    <td>{{ customer.surname_client }}</td>
+                    <td>{{ customer.number_phone }}</td>
+                    <td>{{ customer.email_client }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Все Клиенты</h3>
+    <ul>
+        {% get_customer as apartments %}
+        {% for regularcustomers in apartments %}
+            <li>{{ regularcustomers.name_client }} - {{ regularcustomers.email_client }} </li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

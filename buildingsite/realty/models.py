@@ -5,7 +5,8 @@
 from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils import timezone
-
+from django.db.models import Avg
+from django.urls import reverse
 
 class InfoBuilding(models.Model):
     """
@@ -16,6 +17,8 @@ class InfoBuilding(models.Model):
     street = models.CharField(max_length=200, verbose_name="Название улицы")
     number_building = models.CharField(max_length=200, verbose_name="№ дома")
     updated = models.DateTimeField(auto_now=True)
+    file_document = models.FileField(upload_to='documents/', blank=True, null=True, verbose_name="Документ")
+    website_url = models.URLField(blank=True, null=True, verbose_name="Сайт")
     history = HistoricalRecords()
 
     def __str__(self):
@@ -28,6 +31,15 @@ class InfoBuilding(models.Model):
         verbose_name = 'Информация о ЖК'
         verbose_name_plural = 'Информация о ЖК'
 
+
+class ApartmentManager(models.Manager):
+    def avg_price_by_city(self, city):
+        """Средняя цена квартир в указанном городе"""
+        return self.filter(
+            code_building__city=city
+        ).aggregate(avg_price=Avg('price'))
+
+        
 class Apartment (models.Model):
     """
     Таблица Апартаменты
@@ -42,16 +54,21 @@ class Apartment (models.Model):
                                       on_delete=models.CASCADE)
     apartment_code = models.CharField(null=True, blank=True, max_length=50, unique=True,
                                       verbose_name='Код апартамента')
+    objects = ApartmentManager()
     history = HistoricalRecords()
     class Meta: # pylint: disable=too-few-public-methods
         """
-        Название тпблицы
+        Название таблицы
         """
         verbose_name = 'Апартаменты'
         verbose_name_plural = 'Апартаменты'
         ordering = ['-code_building']
     def __str__(self):
         return f"{self.apartment_code}"
+
+    def get_absolute_url(self):
+        return reverse('apartment_detail', args=[str(self.id)])
+
     def building_info(self):
         """
         Отображение строки с информацией о местоположении и идентификаторах здания,

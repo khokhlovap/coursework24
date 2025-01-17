@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали Апартаментов</title>
+</head>
+<body>
+
+    <h1>Информация о апартаменте</h1>
+    <p><strong>Код Апартамента:</strong> {{ apartment.apartment_code }}</p>
+    <p><strong>Количество Комнат:</strong> {{ apartment.number_rooms }}</p>
+    <p><strong>Этаж:</strong> {{ apartment.number_floor }}</p>
+    <p><strong>Площадь (кв.м):</strong> {{ apartment.square }}</p>
+    <p><strong>Стоимость:</strong> {{ apartment.price }}</p>
+    <a href="{% url 'apartment_list' %}">Назад на главную странизу</a> <!-- Ссылка на список апартаментов -->
+</body>
+</html>
