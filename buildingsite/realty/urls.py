@@ -10,6 +10,7 @@ from realty.views.model_view_set_customers import RegularCustomersModelViewSet
 from realty.views.view_sets_infobuilding import InfobuildingModelViewSet
 InfobuildingModelViewSet
 from realty.views.views import apartment_list, apartment_detail
+from realty.views.homepage_views import apartment
 
 
 router = DefaultRouter()
@@ -24,6 +25,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('apartment/', apartment_list, name='apartment_list'),  # Главная страница со списком апартаментов
     path('apartment/<int:apartment_id>/', apartment_detail, name='apartment_detail'),
+    path('homepage/', apartment, name='apartment'),
     path('code_building/<int:code_building>/', InfobuildingByNumberView.as_view(),
          name='infobuilding-by-number'),
 ]

@@ -31,6 +31,22 @@ class InfoBuilding(models.Model):
         verbose_name = 'Информация о ЖК'
         verbose_name_plural = 'Информация о ЖК'
 
+class BuildingPhoto(models.Model):
+    """
+    Таблица Фото комплексов
+    """
+    building = models.ForeignKey(InfoBuilding, related_name='photos', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='media/building/', verbose_name="Фото комплекса")
+    description = models.CharField(max_length=255, blank=True, verbose_name="Описание фото")
+    history = HistoricalRecords()
+    class Meta: # pylint: disable=too-few-public-methods
+        """
+        Название тпблицы
+        """
+        verbose_name = 'Фото комплекса'
+        verbose_name_plural = 'Фото комплекса'
+    def __str__(self):
+        return f"Фото для {self.building.code_building}"  # pylint: disable=no-member
 
 class ApartmentManager(models.Manager):
     def avg_price_by_city(self, city):

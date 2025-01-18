@@ -1,0 +1,16 @@
+#myMapId {
+    margin: 10px 0px; 
+    height:500px;
+}
+
+@media (max-width: 1200px) {
+    .map {
+      width: 100%;
+    }
+  }
+
+@media (min-width: 1200px) {
+    #myMapId {
+        width: 70%;
+    }
+}

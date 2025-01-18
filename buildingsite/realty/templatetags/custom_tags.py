@@ -1,5 +1,5 @@
 from django import template
-from realty.models import ApplicationWebsite, Apartment, RegularCustomers
+from realty.models import ApplicationWebsite, Apartment, RegularCustomers, StatusApartment
 
 register = template.Library()
 
@@ -18,3 +18,8 @@ def greet_with_context(context, name):
 def get_customer():
     """Возвращает все квартиры."""
     return RegularCustomers.objects.all()
+
+@register.simple_tag
+def count_sold_apartment():
+    """Возвращает количество проданных апартаментов"""
+    return StatusApartment.objects.filter(status_apartment='sold').count()

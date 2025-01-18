@@ -217,3 +217,8 @@ LOGOUT_REDIRECT_URL = '/api/'  # Куда перенаправлять посл�
 # Отключение обязательного подтверждения email
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = True
+
+STATIC_URL = '/realty/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'realty', 'static'),
+]

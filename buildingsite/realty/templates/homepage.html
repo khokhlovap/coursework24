@@ -1,0 +1,219 @@
+{% load static %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Апартаменты Москва</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="text-black">
+    <header class="border-bottom border-black border-2">
+    <nav class="navbar navbar-expand-lg ">
+        <div class="container py-2">
+        <img src="logo.png" class="mx-3" width="150" height="80" alt="Логотип">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#about">О нас</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#popularRoutes">Апартаменты</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#listRouters">Комплексы</a>
+            </li>
+            </ul>
+        </div>
+        </div>
+    </nav>
+    </header>
+    <main>
+    <section class="container-fluid">
+        <div class="container py-5">
+        <div class="row">
+            <div class="col-md-6 text-center text-lg-start px-5 pb-5 pb-lg-0">
+            <h1 id="about" class="fw-bold text-uppercase">Апартаменты</h1>
+            <p class="text-uppercase fs-5 fw-bold text-danger .text-darken-lg">Открой Москву с нами: выбери
+                незабываемый маршрут</p>
+            <p>Предлагаем уникальные экскурсии по историческим локациям столицы</p>
+            </div>
+            <div class="col-md-6 text-center">
+            <img src="picture1.jpg" class="img-fluid rounded" width="500" height="300" alt="Изображение">
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <section class="bg-dark ">
+      <div class="container text-white py-5 px-5">
+        <div class="text-center mt-3">
+          <h2 class="fw-bold">Надежный выбор для тебя!</h2>
+        </div>
+        <div class="text-center">
+          <div class="headline w-25 mx-auto my-4"></div>
+        </div>
+        <div class="text-center">
+          <p>Только знакомитесь с веб-технологиями? Интернет на сегодняшний день развивается феноменально быстро.
+            Поэтому выбрав веб-технологии в качетсве своей специолизации, можете быть уверены - достойное будущее Вам
+            гарантировано.</p>
+        </div>
+        <div class="text-center">
+          <button type="button" class="btn btn-info fs-5 rounded-0">Записаться на курс</button>
+        </div>
+      </div>
+    </section>
+
+
+
+
+
+
+    <section>
+        <div class="container py-5">
+        <h2 id="popularRoutes" class="fw-bold text-center text-uppercase text-primary .text-darken-xl">
+            Апартаменты
+        </h2>
+        <form method="GET" action="{% url 'apartment' %}">
+            <div class="input-group col ps-0">
+
+                <input type="search" name="room_count" class="form-control" id="search-input" placeholder="Введите количество комнат" aria-label="search" value="{{ request.GET.room_count|default_if_none:'' }}">
+                <button class="btn btn-outline-secondary" type="submit" id="button-search">Поиск</button>
+            </div>
+        </form>
+        {% if not_found_message %}
+        <div class="alert alert-warning" role="alert">
+            {{ not_found_message }}
+        </div>
+        {% endif %}
+
+        <div class="row row-cols-1 row-cols-md-3 g-4 py-3">
+            {% for apartment in apartments %}
+            <div class="col">
+            <div class="card" style="width: 24rem;">
+                <div class="image-container">
+                    <img src="{{ apartment.photos.first.image.url }}" class="card-img-top" alt="{{ apartment.apartment_code }}">
+                </div>
+              <div class="card-body">
+                  <h5 class="card-title text-danger fw-bold">Апартаменты</h5>
+                  <p class="card-text">Цена: {{ apartment.price }} <br> Количество комнат: {{ apartment.number_rooms }} <br> Этаж: {{ apartment.number_floor }} <br> Площадь: {{ apartment.square }}</p>
+                <a href="#" class="btn btn-primary">Пдробнее</a>
+              </div>
+            </div>
+            </div>
+        {% endfor %}
+        </div>
+
+        <nav>
+            <ul class="pagination justify-content-center">
+                {% if apartments.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ apartments.previous_page_number }}">Назад</a>
+                </li>
+                {% endif %}
+                {% for num in apartments.paginator.page_range %}
+                <li class="page-item {% if apartments.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endfor %}
+                {% if apartments.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ apartments.next_page_number }}">Вперед</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </section>
+
+    <section>
+        <div class="container py-5">
+            <h2 class="fw-bold text-center text-uppercase text-primary">Комплексы</h2>
+            <div class="row row-cols-1 row-cols-md-2 g-4 py-3">
+                {% for complex in complexes %}
+                    <div class="col">
+                        <div class="card" style="width: 30rem;">
+                            {% if complex.image %}
+                                <img src="{{ complex.image }}" class="card-img-top" alt="{{ complex.street }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title text-danger fw-bold">{{ complex.street }}, {{ complex.number_building }}</h5>
+                                <p class="card-text">Некоторый текст, рассказывающий о здании.</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <section class="container py-5">
+        <h2 id="listRouters" class="fw-bold text-uppercase">Проданных апартаментов: {% count_sold_apartment %}</h2>
+    </section>
+
+
+
+    <section class="container py-5">
+      <h4 class="fw-bold text-uppercase">
+        Если у Вас остались вопросы, заполните форму. Мы с Вами свяжемся!
+      </h4>
+      <div class="pt-5 pt-md-0">
+        <form>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Номер телефона</label>
+            <input type="tel" class="form-control" id="exampleInputEmail1" aria-describedby="telHelp"
+              placeholder="Введите номер телефона">
+            <div id="emailHelp" class="form-text">Мы не передаем введенные данные третьим лицам.</div>
+          </div>
+          <div class="mb-3">
+            <label for="InputName" class="form-label">Имя</label>
+            <input type="text" class="form-control" id="InputName" placeholder="Введите имя">
+          </div>
+          <button type="submit" class="btn border-black rounded">Отправить</button>
+        </form>
+      </div>
+    </section>
+
+
+
+
+
+
+        <table id="gid-table" class="table">
+            <thead id="table-header">
+            <tr>
+                <th scope="col">фото</th>
+                <th scope="col">ФИО</th>
+                <th scope="col">Языки, которыми владеет гид</th>
+                <th scope="col">Опыт работы</th>
+                <th scope="col">Стоимость экскурсионного обслуживания (рублей в час)</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody id="table-body-gid">
+            </tbody>
+        </table>
+
+    <footer class="border-top border-black border-2">
+    <div class="text-center">
+        <p class="pt-3 w-50 mx-auto"><i class="bi bi-envelope"></i> matreshka@info.ru</p>
+        <p>© 2024 Хохлова Полина</p>
+    </div>
+    </footer>
+    <script src="https://mapgl.2gis.com/api/js/v1"></script>
+    <script src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+</body>
+</html>

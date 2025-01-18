@@ -14,7 +14,7 @@ from import_export.admin import ImportExportModelAdmin, ExportActionMixin
 from simple_history.admin import SimpleHistoryAdmin
 from realty.views.pdf import export_to_pdf
 from .models import InfoBuilding, Apartment, StatusApartment, RegularCustomers, Deal2, \
-    ApplicationWebsite, ApartmentPhoto
+    ApplicationWebsite, ApartmentPhoto, BuildingPhoto
 
 
 class ApartmentInline(admin.TabularInline):
@@ -25,6 +25,12 @@ class ApartmentInline(admin.TabularInline):
     model = Apartment
     extra = 1  # Количество пустых форм для добавления новых объектов
 
+class BuildingtPhotoInline(admin.TabularInline):
+    """
+    Создаем inline, связь многие ко многим
+    """
+    model = BuildingPhoto
+    extra = 1  # Количество пустых форм для добавления новых объектов
 
 class InfoBuildingAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
     """
@@ -35,6 +41,7 @@ class InfoBuildingAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
     list_display_links = ('city',)
     inlines = [ApartmentInline]  # Добавляем inline
     actions = [export_to_pdf]
+    inlines = [BuildingtPhotoInline]  # Добавляем inline
 
     @admin.display(description='Код здания')  # Указываем описание для заголовка столбца
     def formatted_code(self, obj):
@@ -110,6 +117,9 @@ class ApartmentPhotoAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
     """Класс медиа"""
     list_display = ('apartment', 'image', 'description')
 
+class BuildingPhotoAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
+    """Класс медиа"""
+    list_display = ('building', 'image', 'description')
 
 class StatusApartmentAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
     """
@@ -234,3 +244,4 @@ admin.site.register(RegularCustomers, RegularCustomersAdmin)
 admin.site.register(Deal2, Deal2Admin)
 admin.site.register(ApplicationWebsite, ApplicationWebsiteAdmin)
 admin.site.register(ApartmentPhoto, ApartmentPhotoAdmin)
+admin.site.register(BuildingPhoto, BuildingPhotoAdmin)
