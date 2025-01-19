@@ -96,7 +96,7 @@ class ApartmentAdmin(SimpleHistoryAdmin, ImportExportModelAdmin,
     list_display = ('number_rooms', 'number_floor', 'square', 'price',
                     'code_building', 'building_info', 'apartment_code')
     list_filter = ('number_rooms', 'number_floor', 'code_building',)
-    readonly_fields = ('square',)
+    # readonly_fields = ('square',)
     search_fields = ('apartment_code',)
     raw_id_fields = ('code_building',)
     inlines = [ApartmentPhotoInline]  # Добавляем inline

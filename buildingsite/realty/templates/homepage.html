@@ -101,7 +101,7 @@
                 </div>
               <div class="card-body">
                   <h5 class="card-title text-success fw-bold">Апартамент</h5>
-                  <p class="card-text">Цена: {{ apartment.price }} <br> Количество комнат: {{ apartment.number_rooms }} <br> Этаж: {{ apartment.number_floor }} <br> Площадь: {{ apartment.square }}</p>
+                  <p class="card-text">Цена: {{ apartment.price|format_price }} <br> Количество комнат: {{ apartment.number_rooms }} <br> Этаж: {{ apartment.number_floor }} <br> Площадь: {{ apartment.square }}</p>
                 <a href="#" class="btn btn-success rounded">Подробнее</a>
               </div>
             </div>

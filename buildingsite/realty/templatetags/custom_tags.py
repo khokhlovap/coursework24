@@ -30,3 +30,10 @@ def count_sold_apartment():
 def add_class(field, css_class):
     """Считаем сколько проданных аппартаментов всего"""
     return field.as_widget(attrs={'class': css_class})
+
+@register.filter
+def format_price(value):
+    """Преобразуем формат цены на сайте"""
+    if value is None:
+        return ''
+    return f"{value:,.0f}".replace(',', ' ').replace('.', ',') + ' ₽'
