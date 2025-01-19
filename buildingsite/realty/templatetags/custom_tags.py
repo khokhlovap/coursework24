@@ -23,3 +23,7 @@ def get_customer():
 def count_sold_apartment():
     """Возвращает количество проданных апартаментов"""
     return StatusApartment.objects.filter(status_apartment='sold').count()
+
+@register.filter
+def add_class(field, css_class):
+    return field.as_widget(attrs={'class': css_class})

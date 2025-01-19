@@ -4,17 +4,19 @@ from django.utils import timezone
 from realty.models import Apartment, RegularCustomers
 from django.db.models import Avg
 from django.shortcuts import render, get_object_or_404
-from realty.models import Apartment, StatusApartment, InfoBuilding
+from realty.models import Apartment, StatusApartment, InfoBuilding, ApplicationWebsite
 from django.core.paginator import Paginator
 from django.db.models import Count
+from django.shortcuts import render, redirect
+from realty.forms.form_application import ApplicationWebsiteForm
+
 
 def apartment(request):
     # Получаем все апартаменты, исключая те, которые имеют статус "продано" и "на рассмотрении"
     apartments = Apartment.objects.exclude(id__in=StatusApartment.objects.filter(status_apartment__in=['sold', 'consideration', 'booked']).values_list(
         'id_apartment', flat=True)).order_by('number_rooms')
     print(apartments)
-    # exclude(number_rooms=3)
-    # status_apartment__in = ['sold', 'consideration'])
+
     # Обработка поиска по количеству комнат
     room_count = request.GET.get('room_count')
     if room_count:
@@ -48,11 +50,22 @@ def apartment(request):
                 'image': building.photos.first().image.url if building.photos.exists() else None,
             }
 
+        if request.method == 'POST':
+            form = ApplicationWebsiteForm(request.POST)
+            if form.is_valid():
+                application = form.save(commit=False)
+                application.status_application = 'accepted'  # или любое другое значение по умолчанию
+                application.save()
+                return redirect('apartment')
+        else:
+            form = ApplicationWebsiteForm()
+
 
     context = {
         'complexes': unique_complexes.values(),
         'apartments': apartments_page,
         'not_found_message': not_found_message,
+        'form': form,
     }
 
     return render(request, 'homepage.html', context)
