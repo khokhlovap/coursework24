@@ -28,6 +28,30 @@
     </header>
 
     <main>
+        <form method="post">
+            {% csrf_token %}
+            <div>
+                <label>Город:</label>
+                <input type="text" value="{{ info_building.city }}" readonly>
+            </div>
+            <div>
+                <label>Улица:</label>
+                <input type="text" value="{{ info_building.street }}" readonly>
+            </div>
+            <div>
+                <label>№ дома:</label>
+                <input type="text" value="{{ info_building.number_building }}" readonly>
+            </div>
+            <div>
+                <label>Количество комнат:</label>
+                <input type="text" value="{{ apartment.number_rooms }}" readonly>
+            </div>
+            <div>
+                <label>Цена:</label>
+                <input type="text" name="price" value="{{ apartment.price }}" required>
+            </div>
+            <button type="submit">Сохранить изменения</button>
+        </form>
 
 
 

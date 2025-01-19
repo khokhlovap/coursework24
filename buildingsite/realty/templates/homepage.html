@@ -101,9 +101,8 @@
                     <img src="{{ apartment.photos.first.image.url }}" class="card-img-top" alt="{{ apartment.apartment_code }}">
                 </div>
               <div class="card-body">
-<!--                  <h5 class="card-title text-success fw-bold">Апартамент</h5>-->
                   <p style="font-size: 17px;" class="card-text">Цена: {{ apartment.price|format_price }} <br> Количество комнат: {{ apartment.number_rooms }} <br> Этаж: {{ apartment.number_floor }} <br> Площадь: {{ apartment.square }} м²</p>
-                <a href="#" class="btn btn-success rounded">Подробнее</a>
+                <a href="{% url 'apartment' apartment.id %}" class="btn btn-success rounded">Подробнее</a>
               </div>
             </div>
             </div>
