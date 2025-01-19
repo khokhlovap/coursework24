@@ -11,6 +11,8 @@ from realty.views.view_sets_infobuilding import InfobuildingModelViewSet
 InfobuildingModelViewSet
 from realty.views.views import apartment_list, apartment_detail
 from realty.views.homepage_views import apartment
+from realty.views.apartment_id import apartment_id
+from realty.views.apartmentcorect import apartment_correct
 
 
 router = DefaultRouter()
@@ -29,4 +31,6 @@ urlpatterns = [
     path('code_building/<int:code_building>/', InfobuildingByNumberView.as_view(),
          name='infobuilding-by-number'),
     path('__debug__/', include('debug_toolbar.urls')),
+    path('homepage/<int:apartment_id>/', apartment_id, name='apartment'),
+    path('apartmentcorrect/', apartment_correct, name='apartment_correct'),
 ]
