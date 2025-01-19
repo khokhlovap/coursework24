@@ -93,7 +93,7 @@ class ApartmentAdmin(SimpleHistoryAdmin, ImportExportModelAdmin,
     """
 
     resource_class = ApartmentResource
-    list_display = ('number_rooms', 'number_floor', 'square', 'price',
+    list_display = ('id', 'number_rooms', 'number_floor', 'square', 'price',
                     'code_building', 'building_info', 'apartment_code')
     list_filter = ('number_rooms', 'number_floor', 'code_building',)
     # readonly_fields = ('square',)

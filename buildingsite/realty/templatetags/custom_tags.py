@@ -28,7 +28,7 @@ def count_sold_apartment():
 
 @register.filter
 def add_class(field, css_class):
-    """Считаем сколько проданных аппартаментов всего"""
+    """Добавляет указанный CSS-класс к полю формы."""
     return field.as_widget(attrs={'class': css_class})
 
 @register.filter
