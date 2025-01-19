@@ -1,3 +1,5 @@
+"""Форма для сайта (собираем заявки)"""
+
 from django import forms
 from realty.models import ApplicationWebsite
 

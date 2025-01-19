@@ -28,4 +28,5 @@ urlpatterns = [
     path('homepage/', apartment, name='apartment'),
     path('code_building/<int:code_building>/', InfobuildingByNumberView.as_view(),
          name='infobuilding-by-number'),
+    path('__debug__/', include('debug_toolbar.urls')),
 ]

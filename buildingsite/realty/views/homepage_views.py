@@ -1,9 +1,6 @@
+"""Вьюшка для главной страницы"""
 
-from django.shortcuts import render, get_object_or_404
-from django.utils import timezone
-from realty.models import Apartment, RegularCustomers
 from django.db.models import Avg
-from django.shortcuts import render, get_object_or_404
 from realty.models import Apartment, StatusApartment, InfoBuilding, ApplicationWebsite
 from django.core.paginator import Paginator
 from django.db.models import Count
@@ -12,7 +9,7 @@ from realty.forms.form_application import ApplicationWebsiteForm
 
 
 def apartment(request):
-    # Получаем все апартаменты, исключая те, которые имеют статус "продано" и "на рассмотрении"
+    # Получаем все апартаменты, исключая те, которые имеют статус "продано" и "на рассмотрении" и "забронировано", фильтрация по возрастанию кол-ва комнат
     apartments = Apartment.objects.exclude(id__in=StatusApartment.objects.filter(status_apartment__in=['sold', 'consideration', 'booked']).values_list(
         'id_apartment', flat=True)).order_by('number_rooms')
     print(apartments)
@@ -32,7 +29,7 @@ def apartment(request):
     if room_count and not apartments.exists():
         not_found_message = "Апартаменты с введенным количеством комнат не найдены."
 
-    # Получаем здания, которые находятся в Москве с фотографиями
+    # Получаем здания, которые находятся в Москве + фотографии
     buildings = InfoBuilding.objects.filter(city='Москва').prefetch_related('photos')
 
     # Словарь для уникальных комплексов
@@ -50,6 +47,7 @@ def apartment(request):
                 'image': building.photos.first().image.url if building.photos.exists() else None,
             }
 
+        # Добавляем данные с формы
         if request.method == 'POST':
             form = ApplicationWebsiteForm(request.POST)
             if form.is_valid():
@@ -69,5 +67,3 @@ def apartment(request):
     }
 
     return render(request, 'homepage.html', context)
-
-

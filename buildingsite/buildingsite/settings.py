@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'import_export',
+    'debug_toolbar',
     'simple_history',
     'drf_yasg',
     'django_celery_beat',
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -222,4 +224,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 STATIC_URL = '/realty/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'realty', 'static'),
+]
+
+INTERNAL_IPS = [
+ '127.0.0.1',
 ]
