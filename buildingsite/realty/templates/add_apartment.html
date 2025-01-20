@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Апартаменты Москва</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body class="text-black">
+    <header class="border-bottom border-gray border-2">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container py-2">
+                <img src="{% static 'image/logo.png' %}" class="mx-3" width="100" height="30" alt="Логотип">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'apartment' %}">Главная страница</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'apartment_correct' %}">Все апартаменты</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="container py-5">
+            <h3 class="fw-bold text-uppercase">Добавить новый апартамент</h3>
+            <div class="pt-5 pt-md-0">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="number_rooms" class="form-label">Количество комнат:</label>
+                        {{ form.number_rooms }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="number_floor" class="form-label">Этаж:</label>
+                        {{ form.number_floor }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="square" class="form-label">Площадь (кв.м):</label>
+                        {{ form.square }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Цена в рублях:</label>
+                        {{ form.price }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="code_building" class="form-label">Код здания:</label>
+                        {{ form.code_building }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Выберите фото:</label>
+                        {{ photo_form.image }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Описание фото:</label>
+                        {{ photo_form.description }}
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                    <a href="{% url 'apartment_correct' %}" class="btn btn-secondary">Отмена</a>
+                </form>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

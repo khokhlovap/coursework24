@@ -9,9 +9,14 @@ from realty.forms.form_application import ApplicationWebsiteForm
 
 
 def apartment(request):
-    # Получаем все апартаменты, исключая те, которые имеют статус "продано" и "на рассмотрении" и "забронировано", фильтрация по возрастанию кол-ва комнат
-    apartments = Apartment.objects.exclude(id__in=StatusApartment.objects.filter(status_apartment__in=['sold', 'consideration', 'booked']).values_list(
-        'id_apartment', flat=True)).order_by('number_rooms')
+    # Получаем все апартаменты, исключая те, которые имеют статус "продано" и "на рассмотрении" и "забронировано", фильтрация по возрастанию кол-ва комнат + город=Москва
+    apartments = Apartment.objects.exclude(
+        id__in=StatusApartment.objects.filter(
+            status_apartment__in=['sold', 'consideration', 'booked']
+        ).values_list('id_apartment', flat=True)
+    ).filter(
+        code_building__city='Москва'  # Фильтр по городу
+    ).order_by('number_rooms')
     print(apartments)
 
     # Обработка поиска по количеству комнат

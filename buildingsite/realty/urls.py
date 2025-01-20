@@ -1,6 +1,8 @@
 """
 Подключение urls
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from realty.views.filter_by_code_building import InfobuildingByNumberView
@@ -12,7 +14,9 @@ InfobuildingModelViewSet
 from realty.views.views import apartment_list, apartment_detail
 from realty.views.homepage_views import apartment
 from realty.views.apartment_id import apartment_id
-from realty.views.apartmentcorect import apartment_correct
+from realty.views.apartmentcorect import apartment_correct, delete_apartment
+from realty.forms.forma_newapartment import add_apartment
+
 
 
 router = DefaultRouter()
@@ -34,4 +38,10 @@ urlpatterns = [
     path('homepage/<int:apartment_id>/', apartment_id, name='apartment_id'),
     path('homepage/<int:apartment_id>/', apartment_id, name='apartment'),
     path('apartmentcorrect/', apartment_correct, name='apartment_correct'),
+    path('apartmentcorrect/delete/<int:pk>/', delete_apartment, name='delete_apartment'),
+    path('apartmentcorrect/add/', add_apartment, name='add_apartment'),
 ]
+
+#Для загрузки фото в форму (создание нового апартамента)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

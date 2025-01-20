@@ -28,36 +28,48 @@
     </header>
 
     <main>
-        <form method="post">
-            {% csrf_token %}
-            <div>
-                <label>Город:</label>
-                <input type="text" value="{{ info_building.city }}" readonly>
-            </div>
-            <div>
-                <label>Улица:</label>
-                <input type="text" value="{{ info_building.street }}" readonly>
-            </div>
-            <div>
-                <label>№ дома:</label>
-                <input type="text" value="{{ info_building.number_building }}" readonly>
-            </div>
-            <div>
-                <label>Количество комнат:</label>
-                <input type="text" value="{{ apartment.number_rooms }}" readonly>
-            </div>
-            <div>
-                <label>Цена:</label>
-                <input type="text" name="price" value="{{ apartment.price }}" required>
-            </div>
-            <button type="submit">Сохранить изменения</button>
-        </form>
+        <section class="container py-5">
+          <h3 class="fw-bold text-uppercase">
+            Апартамент c id = {{ apartment.id }}
+          </h3>
+            <div class="pt-5 pt-md-0">
+                <form method="post">
+                    {% csrf_token %}
 
+                    <div class="mb-3">
+                        <label for="number_rooms" class="form-label">Количество комнат:</label>
+                        <input type="text" id="number_rooms" class="form-control" value="{{ apartment.number_rooms }}" readonly>
+                    </div>
 
+                    <div class="mb-3">
+                        <label for="number_floor" class="form-label">Этаж:</label>
+                        <input type="text" id="number_floor" class="form-control" value="{{ apartment.number_floor }}" readonly>
+                    </div>
 
+                    <div class="mb-3">
+                        <label for="square" class="form-label">Площадь:</label>
+                        <input type="text" id="square" class="form-control" value="{{ apartment.square }} м²" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="city" class="form-label">Город:</label>
+                        <input type="text" id="city" class="form-control" value="{{ info_building.city }}" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Адрес:</label>
+                        <input type="text" id="address" class="form-control" value="{{ info_building.street }}, {{ info_building.number_building }}" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Цена в рублях:</label>
+                        <input type="text" id="price" name="price" class="form-control" value="{{ apartment.price|floatformat:0 }}" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success rounded">Сохранить изменения</button>
+                </form>
+            </div>
     </main>
-
-
     <footer class="border-top border-black border-2">
     <div class="text-center">
         <p class="pt-3 w-50 mx-auto"><i class="bi bi-envelope"></i> more@info.ru</p>
@@ -66,4 +78,3 @@
     </footer>
 </body>
 </html>
-
