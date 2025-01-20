@@ -3,6 +3,8 @@
 from django.shortcuts import render, redirect
 from realty.models import Apartment, InfoBuilding, ApartmentPhoto
 from django import forms
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 class ApartmentForm(forms.ModelForm):
     class Meta:
@@ -11,8 +13,8 @@ class ApartmentForm(forms.ModelForm):
         widgets = {
             'number_rooms': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
             'number_floor': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
-            'square': forms.NumberInput(attrs={'class': 'form-control', 'min': 0}),
-            'price': forms.NumberInput(attrs={'class': 'form-control', 'min': 0}),
+            'square': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
+            'price': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
             'code_building': forms.Select(attrs={'class': 'form-select'}),
         }
 
@@ -25,7 +27,8 @@ def add_apartment(request):
             apartment_photo = photo_form.save(commit=False)
             apartment_photo.apartment = apartment
             apartment_photo.save()
-            return redirect('apartment_correct')
+            return HttpResponseRedirect(reverse('apartment_correct'))
+            # return redirect('apartment_correct')
     else:
         form = ApartmentForm()
         photo_form = ApartmentPhotoForm()

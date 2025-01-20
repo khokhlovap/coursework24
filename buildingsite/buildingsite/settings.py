@@ -215,8 +215,8 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1  # ID текущего сайта, используемого в Django Sites Framework
 
 # Перенаправления после логина/логаута
-LOGIN_REDIRECT_URL = '/api/'  # Куда перенаправлять после успешного входа
-LOGOUT_REDIRECT_URL = '/api/'  # Куда перенаправлять после выхода
+LOGIN_REDIRECT_URL = '/api/homepage/'  # Куда перенаправлять после успешного входа
+LOGOUT_REDIRECT_URL = '/api/homepage/'  # Куда перенаправлять после выхода
 
 # Отключение обязательного подтверждения email
 ACCOUNT_EMAIL_VERIFICATION = "none"
